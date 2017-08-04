@@ -29,7 +29,7 @@ Open up a Terminal or Command Prompt window, and either
 wget http:/tiny.cc/eihgpong
 chmod +x eihgpong
 mkdir -p $HOME/bin
-mv eihgpon $HOME/bin
+mv eihgpong $HOME/bin
 PATH=$PATH:$HOME/bin
 eihgpong -p ShortName:your.email@your.domain
 ```
@@ -41,12 +41,10 @@ git clone https://github.com/ryanlayer/eihgpong.git
 
 ### Usage
 To access the ladder bracket CLI, simply run the `eihgpong`
-
 ```
 eihgpong
 ```
 
-```
 All options are viewable by running:
 ```
 eihgpong -h
