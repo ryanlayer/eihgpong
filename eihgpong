@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+PROGRAM="eihgpong"
+VERSION="v0.0.1"
+
+echo $PROGRAM $VERSION
+
 DATE=`date +%Y-%m-%d`
 
 usage()
