@@ -1,31 +1,40 @@
 # EIHG Pong Ladder Bracket CLI
 
-### Installation
+### Installation and player registration
 Open up a Terminal or Command Prompt window, and either
+```
+wget http:/tiny.cc/eihgpong
+chmod +x eihgpong
+mkdir -p $HOME/bin
+mv eihgpon $HOME/bin
+PATH=$PATH:$HOME/bin
+eihgpong -p ShortName:your.email@your.domain
+```
+
+You can also checkout the repo
 ```
 git clone https://github.com/ryanlayer/eihgpong.git
 ```
-or
-```
-wget http:/tiny.cc/eihgpong
-```
 
 ### Usage
-To access the ladder bracket CLI, simply run the `eihgpong` bash script with 
+To access the ladder bracket CLI, simply run the `eihgpong`
 
 ```
-bash eihgpong
+eihgpong
 ```
 
-Alternatively, make `eihgpong` executable and run it.
-
+```
 All options are viewable by running:
 ```
 eihgpong -h
 ```
 
-#### Sign-up
+#### View leader and challenge board
+```
+eihgpong
+```
 
+#### Sign-up
 ```
 eihgpong -p <name>:<email>
 ```
