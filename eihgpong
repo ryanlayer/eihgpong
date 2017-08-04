@@ -1,0 +1,119 @@
+#!/bin/bash
+set -e
+
+DATE=`date +%Y-%m-%d`
+
+usage()
+{
+    cat << EOF
+
+usage: $0 OPTIONS
+
+OPTIONS can be:
+    -h      Show this message
+    -p      Add a new player (name:email)
+    -m      Add a new match (requires -a -A -b -B)
+    -c      Add a new challenge (requires -a -b)
+    -a      Player A name
+    -A      Player A win count
+    -b      Player B nme
+    -B      Player B win count
+    -d      Match date (default $DATE)
+
+EOF
+}
+
+
+SERVER=http://potter.genetics.utah.edu/pong
+LIST=
+MATCH=
+PLAYER_A=
+PLAYER_A_WINS=
+PLAYER_B=
+PLAYER_B_WINS=
+NEW_PLAYER=
+CHALLENGE=
+# Check options passed in.
+while getopts "hma:A:b:B:d:p:c" OPTION
+do
+    case $OPTION in
+        h)
+            usage
+            exit 1
+            ;;
+        m)
+            MATCH=1
+            ;;
+        c)
+            CHALLENGE=1
+            ;;
+        a)
+            PLAYER_A=$OPTARG
+            ;;
+        A)
+            PLAYER_A_WINS=$OPTARG
+            ;;
+        b)
+            PLAYER_B=$OPTARG
+            ;;
+        B)
+            PLAYER_B_WINS=$OPTARG
+            ;;
+        d)
+            DATE=$OPTARG
+            ;;
+        p)
+            NEW_PLAYER=$OPTARG
+            ;;
+        ?)
+            usage
+            exit
+            ;;
+    esac
+done
+
+if [ ! -z "$NEW_PLAYER" ];then
+    curl -l http://potter.genetics.utah.edu/pong/?player=${NEW_PLAYER}
+fi
+
+if [ ! -z "$CHALLENGE" ];then
+    if [ -z "$PLAYER_A" ];then
+        echo "Missing player A name"
+        usage
+        exit 1
+    fi
+    if [ -z "$PLAYER_B" ];then
+        echo "Missing player A name"
+        usage
+        exit 1
+    fi
+    CHALLEGE_STRING=${PLAYER_A}:${PLAYER_B}:${DATE}
+    curl -l http://potter.genetics.utah.edu/pong/?challenge=${CHALLEGE_STRING}
+fi 
+
+if [ ! -z "$MATCH" ];then
+    if [ -z "$PLAYER_A" ];then
+        echo "Missing player A name"
+        usage
+        exit 1
+    fi
+    if [ -z "$PLAYER_A_WINS" ];then
+        echo "Missing player A win count"
+        usage
+        exit 1
+    fi
+    if [ -z "$PLAYER_B" ];then
+        echo "Missing player B name"
+        usage
+        exit 1
+    fi
+    if [ -z "$PLAYER_B_WINS" ];then
+        echo "Missing player B win count"
+        usage
+        exit 1
+    fi
+    MATCH_STRING=${PLAYER_A}:${PLAYER_B}:${PLAYER_A_WINS}:${PLAYER_B_WINS}:${DATE}
+    curl -l http://potter.genetics.utah.edu/pong/?match=${MATCH_STRING}
+fi
+
+curl -l ${SERVER}/?list=1
