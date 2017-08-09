@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    <style>
+    body {
+        background-color: black;
+        color: green;
+        font-family: Courier New;
+        font-size: 14px;
+    }
+    input {
+        background-color: black;
+        color: green;
+        font-family: Courier New;
+        border-color: black;
+        font-size: 14px;
+        outline: none;
+    }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+    <!-- <script src="app.js"></script> -->
+    <script>
+
+    function runCmd() {
+        var pongURL = "http://potter.genetics.utah.edu/pong";
+
+        var help_str = `
+usage: eihgpong OPTIONS
+OPTIONS can be:
+-h      Show this message
+-p      Add a new player (name:email)
+-m      Add a new match (requires -a -A -b -B)
+-c      Add a new challenge (requires -a -b)
+-a      Player A name
+-A      Player A win count
+-b      Player B nme
+-B      Player B win count
+-d      Match date`;
+
+
+        pongURL += "/?list=1"
+
+        console.log( $('#command').val().split(" ") );
+        var args = $('#command').val().split(" ");
+
+        var help = 0;
+
+        for (var i = 1; i < args.length;) {
+            console.log( args[i] );
+
+            if (args[i] == "-h") {
+                help = 1
+                i+=1;
+            }
+        }
+
+        if (help == 1) {
+            $('#result').html(help_str).wrap('<pre />');
+        } else {
+            pongURL += "/?list=1"
+
+            console.log( pongURL );
+
+            $.ajax({
+                url: pongURL,
+                type: "GET",
+                crossDomain: true,
+                dataType: "text",
+                success: function(data) {
+                    var results = [];
+                    var header = null;
+                    var records = [];
+                    $('#result').html(data).wrap('<pre />');
+                }
+            });
+        }
+    }
+
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div id="command-form">
+          <form action="javascript:runCmd()">
+                $ <input id="command" value="eihgpong" size="100%" autocomplete="off"></input>
+          </form>
+      </div>
+      <div id="result">
+      </div>
+
+    <!-- Latest compiled and minified CSS -->
+  </body>
+</html>
